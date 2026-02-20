@@ -1,11 +1,47 @@
-const posts = require("../data/db");
+const mysql = require("mysql2");
 
-function index(req, res) {
-    res.json(movie);
+
+const db = mysql.createConnection({
+    host: "localhost",
+    user: "root",
+    password: "root",
+    database: "webapp_express"
+});
+
+
+
+exports.index = (req, res) => {
+
+    db.query("SELECT * FROM movies", (err, results) => {
+        if (err) {
+            console.error(err);
+            return res.status(500).send("Errore database");
+        }
+
+        res.json(results);
+    });
+
 };
 
-function show(req, res) {
-    const id = parseInt(req.params.id);
-    const movie = posts.find(post => post.id === id);
-    res.json(movie);
+
+
+exports.show = (req, res) => {
+
+    const id = req.params.id;
+
+    const sql = "SELECT * FROM movies WHERE id = ?";
+
+    db.query(sql, [id], (err, results) => {
+        if (err) {
+            console.error(err);
+            return res.status(500).send("Errore database");
+        }
+
+        if (results.length === 0) {
+            return res.status(404).send("Film non trovato");
+        }
+
+        res.json(results[0]);
+    });
+
 };

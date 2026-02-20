@@ -1,7 +1,12 @@
 const express = require('express');
 const mysql = require("mysql2");
+const movieController = require("./controllers/movieController");
+
 const app = express();
 const port = 3000;
+
+app.get("/movies", movieController.index);
+app.get("/movies/:id", movieController.show);
 
 
 app.get('/', (req, res) => {
@@ -16,7 +21,7 @@ const db = mysql.createConnection({
     host: "localhost",
     user: "root",
     password: "root",
-    database: "cinema"
+    database: "webapp_express"
 });
 
 db.connect(err => {
