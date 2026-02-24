@@ -1,6 +1,7 @@
 const express = require('express');
 const mysql = require("mysql2");
 const movieController = require("./controllers/movieController");
+const cors = require("cors");
 
 const app = express();
 const port = 3000;
@@ -28,3 +29,7 @@ db.connect(err => {
     if (err) throw err;
     console.log("Connesso al DB");
 });
+
+app.use(cors());
+app.use(express.json());
+
