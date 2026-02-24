@@ -6,6 +6,9 @@ const cors = require("cors");
 const app = express();
 const port = 3000;
 
+app.use(cors());
+app.use(express.json());
+
 app.get("/movies", movieController.index);
 app.get("/movies/:id", movieController.show);
 
@@ -17,19 +20,4 @@ app.get('/', (req, res) => {
 app.listen(port, () => {
     console.log(`Server running on port ${port}`);
 })
-
-const db = mysql.createConnection({
-    host: "localhost",
-    user: "root",
-    password: "root",
-    database: "webapp_express"
-});
-
-db.connect(err => {
-    if (err) throw err;
-    console.log("Connesso al DB");
-});
-
-app.use(cors());
-app.use(express.json());
 
