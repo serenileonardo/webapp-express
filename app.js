@@ -13,6 +13,8 @@ app.get("/movies", movieController.index);
 app.get("/movies/:id", movieController.show);
 
 
+app.post("/movies/:id/reviews", movieController.addReview);
+
 app.get('/', (req, res) => {
     res.send('Server OK');
 });
