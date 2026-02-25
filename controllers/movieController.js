@@ -38,30 +38,26 @@ exports.show = (req, res) => {
 
 };
 
-//exports.addReview = (req, res) => {
-// console.log("addReview called");
-//  const id = req.params.id;
-//  console.log("Movie ID:", id);
-//  console.log(req.body);
-//   res.json({ message: `Recensione aggiunta per il film con ID ${id}` });
-//};
 
 // funzione per lo store della review
 exports.addReview = (req, res) => {
 
-    // recuperiamo id da param dinamico
+    // id del film dall'URL
     const id = req.params.id;
 
-    // recuperiamo le info dal body della req
+    // dati della recensione dal body
     const { name, vote, text } = req.body;
 
-    // settiamo Sql di richiesta al DB
-    const sql = 'INSERT INTO reviews (text, name, vote) VALUES (?, ?, ?)';
+    // query SQL
+    const sql = `INSERT INTO reviews (movie_id, text, name, vote) VALUES (?, ?, ?, ?)`;
 
-    // Eseguiamo la query
-    db.query(sql, [text, name, vote], (err, results) => {
+    // esegue la query
+    db.query(sql, [id, text, name, vote], (err, results) => {
         if (err) return res.status(500).json({ error: 'Database query failed' });
-        res.status(201);
-        res.json({ message: 'Review added', id: results.insertId });
+
+        res.status(201).json({
+            message: 'review added',
+            id: results.insertId
+        });
     });
 };
